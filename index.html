@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head><title>Task Manager</title></head>
+<body>
+  <h1>Task Manager</h1>
+  <form id="taskForm">
+    <input type="text" id="description" placeholder="Task Description" required />
+    <button type="submit">Add Task</button>
+  </form>
+  <ul id="taskList"></ul>
+<script>
+async function fetchTasks() {
+  const res = await fetch('/tasks');
+  const tasks = await res.json();
+  document.getElementById('taskList').innerHTML = tasks.map(t =>
+    `<li>${t.description} [${t.status}] <button onclick="deleteTask(${t.id})">X</button></li>`).join('');
+}
+document.getElementById('taskForm').onsubmit = async e => {
+  e.preventDefault();
+  const description = document.getElementById('description').value;
+  await fetch('/tasks', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ description, status: 'pending' })
+  });
+  fetchTasks();
+};
+async function deleteTask(id) {
+  await fetch(`/tasks/${id}`, { method: 'DELETE' });
+  fetchTasks();
+}
+fetchTasks();
+</script>
+</body>
+</html>
