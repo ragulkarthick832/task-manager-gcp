@@ -49,10 +49,10 @@ app.delete('/tasks/:id', async (req, res) => {
 // });
 async function startServer() {
     try {
-    //   const conn = await mysql.createConnection(dbConfig);
-    //   await conn.ping(); // Quick way to test connection
-    //   console.log('✅ Successfully connected to the database.');
-    //   conn.end();
+      const conn = await mysql.createConnection(dbConfig);
+      await conn.ping(); // Quick way to test connection
+      console.log('✅ Successfully connected to the database.');
+      conn.end();
   
       app.listen(port,'0.0.0.0', () => {
         console.log(`🚀 Server running on port ${port}`);
