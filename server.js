@@ -1,10 +1,13 @@
 const express = require('express');
+const path = require('path');
 const mysql = require('mysql2/promise');
 const app = express();
 const port = 3000;
 
 app.use(express.json());
-
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+  });
 // Update with your Cloud SQL config
 const dbConfig = {
   host: '34.58.81.11', 
@@ -46,12 +49,12 @@ app.delete('/tasks/:id', async (req, res) => {
 // });
 async function startServer() {
     try {
-      const conn = await mysql.createConnection(dbConfig);
-      await conn.ping(); // Quick way to test connection
-      console.log('✅ Successfully connected to the database.');
-      conn.end();
+    //   const conn = await mysql.createConnection(dbConfig);
+    //   await conn.ping(); // Quick way to test connection
+    //   console.log('✅ Successfully connected to the database.');
+    //   conn.end();
   
-      app.listen(port, () => {
+      app.listen(port,'0.0.0.0', () => {
         console.log(`🚀 Server running on port ${port}`);
       });
     } catch (err) {
